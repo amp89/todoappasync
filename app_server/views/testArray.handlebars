@@ -1,0 +1,58 @@
+Test data array (rows) from sql:
+<table>
+
+
+
+{{#each sqlArray}}
+
+<tr>
+      <form action="modify" name="toDoThing" method="POST">
+      <td>
+        {{this.id}}<input type="hidden" name="id" value={{this.id}} />
+      </td>
+      <td>
+        <input type="text" name="item" value="{{this.item}}" />
+      </td>
+      <td>
+        <button type="submit">Change</button>
+        </form>
+      </td>
+      <td>
+        <form action="delete" name="deleteThingsForm" method="POST">
+          <input type="hidden" name="idToDelete" value="{{this.id}}" />
+          <button id="delete" type="submit">Delete</button>
+          <script>
+          var deleteButton = document.getElementById('delete');
+          deleteButton.addEventListener('click',function(e){
+              e.preventDefault();
+              var idToDelete = document.getElementByName("idToDelete").value;
+              var idToDeleteJSON = JSON.stringify(idToDelete);
+              var xhr = new XMLHttpRequest();
+              xhr.open('POST','/delete');
+              xhr.setRequestHeader('Content-type','application/json');
+              xhr.onreadystatechange = function(){
+                console.log("XHR STATE: " + xhr.readyState);
+              }
+              xhr.send(idToDeleteJSON);
+          });
+
+
+          </script>
+        </form>
+      </td>
+    </tr>
+    <br>
+{{/each}}
+
+<br>Add A thing or whatever
+
+
+
+</table>
+
+
+
+<form action="addStuff" name="add" method="POST">
+  <input type="text" name="itemToAdd" />
+  <button type="submit">Add New Thing</button>
+</form>
